@@ -17,5 +17,6 @@ class ComparisonTests(unittest.TestCase):
         self.assertIsNone(None)
         self.assertIsNotNone(True)
 
+
 if __name__ == "__main__":
     unittest.main()
