@@ -1,3 +1,5 @@
+name: ci
+
 on: push
 
 jobs:
@@ -22,6 +24,7 @@ jobs:
                   labels: autopep8
                   reviewers: ClubiNew
                   branch: autopep8-patches
+                  branch-suffix: short-commit-hash
 
     tests:
         runs-on: ubuntu-latest
