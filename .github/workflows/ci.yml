@@ -25,6 +25,7 @@ jobs:
                   reviewers: ClubiNew
                   branch: autopep8-patches
                   branch-suffix: short-commit-hash
+                  token: ${{ secrets.AUTOPEP8_TOKEN }}
 
     tests:
         runs-on: ubuntu-latest
