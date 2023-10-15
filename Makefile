@@ -1,10 +1,10 @@
 install:
 	pip install -r requirements.txt
 
-tests:
+test:
 	python -m nose2
 
-all: install tests
+all: install test
 
-.PHONY: all install tests
+.PHONY: all install test
 .DEFAULT_GOAL := all
