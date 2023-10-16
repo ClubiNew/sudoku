@@ -212,6 +212,7 @@ def process_events():
         # regenerating
         elif event.key == pygame.K_g:
             grid = random_puzzle()
+            selected_cell = None
             redraw = True
         # solving
         elif event.key == pygame.K_RETURN:
