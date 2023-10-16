@@ -52,8 +52,17 @@ def draw():
 
     # highlight cells
     for cell in grid.get_cells():
-        rect = (grid_margin + cell_size * cell.col, grid_margin + cell_size * cell.row,
-                cell_size + 1, cell_size + 1)
+        rect = (
+            grid_margin +
+            cell_size *
+            cell.col,
+            grid_margin +
+            cell_size *
+            cell.row,
+            cell_size +
+            1,
+            cell_size +
+            1)
         if cell == selected_cell:
             pygame.draw.rect(surface, Colors.BLU, rect)
         elif selected_cell is not None and cell.related_to(selected_cell):
@@ -83,7 +92,8 @@ def draw():
             text_rect = text.get_rect(
                 center=(cell_size / 2, cell_size / 2))
             text_rect = text_rect.move(
-                grid_margin + cell_size * cell.col, grid_margin + cell_size * cell.row)
+                grid_margin + cell_size * cell.col,
+                grid_margin + cell_size * cell.row)
             surface.blit(text, text_rect)
         else:
             # if the value isn't set, we draw the notes
@@ -92,7 +102,8 @@ def draw():
                 text_rect = text.get_rect(
                     center=(note_size / 2, note_size / 2))
                 text_rect = text_rect.move(
-                    grid_margin + cell_size * cell.col, grid_margin + cell_size * cell.row)
+                    grid_margin + cell_size * cell.col,
+                    grid_margin + cell_size * cell.row)
                 text_rect = text_rect.move(
                     (note - 1) % 3 * note_size, (note - 1) // 3 * note_size)
                 surface.blit(text, text_rect)
@@ -127,7 +138,8 @@ def process_events():
         if event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
 
-            if grid_margin <= x <= grid_margin + grid_size and grid_margin <= y <= grid_margin + grid_size:
+            if grid_margin <= x <= grid_margin + \
+                    grid_size and grid_margin <= y <= grid_margin + grid_size:
                 row = int((y - grid_margin) / cell_size)
                 col = int((x - grid_margin) / cell_size)
                 global selected_cell

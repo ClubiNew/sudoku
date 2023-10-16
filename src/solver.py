@@ -25,7 +25,8 @@ def sweep_notes(grid: Grid):
             cell.set_value(cell.notes[0])
             return True
 
-        # if a note is only possible in one cell in a relation, it must be in that cell
+        # if a note is only possible in one cell in a relation, it must be in
+        # that cell
         for relation in [Relation.ROW, Relation.COL, Relation.BOX]:
             unique_notes = cell.notes.copy()
 
