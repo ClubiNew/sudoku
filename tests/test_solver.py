@@ -8,7 +8,8 @@ class SolverTests(unittest.TestCase):
     def test_solvable_grids(self):
         for example in solvable:
             grid = Grid(example["unsolved"])
-            for solved_row, golden_row in zip(solve(grid).to_array(), example["solved"]):
+            for solved_row, golden_row in zip(
+                    solve(grid).to_array(), example["solved"]):
                 self.assertListEqual(solved_row, golden_row)
 
     def test_empty_grid(self):

@@ -45,7 +45,8 @@ class Cell:
 
 
 class Grid:
-    def __init__(self, values: list[list[int]] = [[0 for _ in range(9)] for _ in range(9)]):
+    def __init__(self, values: list[list[int]] = [
+                 [0 for _ in range(9)] for _ in range(9)]):
         self.rows = [[Cell(r, c, values[r][c])
                       for c in range(9)] for r in range(9)]
 
@@ -55,7 +56,8 @@ class Grid:
         return f"[\n\t[{'],\n\t['.join(rows)}]\n]"
 
     def to_array(self):
-        return [[int(self.rows[row][col]) for col in range(9)] for row in range(9)]
+        return [[int(self.rows[row][col]) for col in range(9)]
+                for row in range(9)]
 
     def get_cell(self, row: int, col: int) -> Cell:
         return self.rows[row][col]
@@ -64,7 +66,8 @@ class Grid:
         return (cell for row in self.rows for cell in row)
 
     def get_related_cells(self, cell: Cell, relation: Relation = Relation.ALL):
-        return (other_cell for other_cell in self.get_cells() if cell.related_to(other_cell, relation))
+        return (other_cell for other_cell in self.get_cells()
+                if cell.related_to(other_cell, relation))
 
     def validate_cell(self, cell: Cell):
         if not cell.has_value():
