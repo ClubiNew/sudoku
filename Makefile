@@ -4,7 +4,7 @@ install:
 test:
 	python -m nose2
 
-all: install test
+exe:
+	pyinstaller -F -n sudoku src\gui.py
 
-.PHONY: all install test
-.DEFAULT_GOAL := all
+.PHONY: install test exe
