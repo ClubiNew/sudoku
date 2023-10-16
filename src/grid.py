@@ -86,4 +86,5 @@ class Grid:
         return True
 
     def is_solved(self):
-        return all(cell.has_value() and self.validate_cell(cell) for cell in self.get_cells())
+        return all(cell.has_value() and self.validate_cell(cell)
+                   for cell in self.get_cells())

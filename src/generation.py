@@ -48,7 +48,7 @@ def random_puzzle(seed=None):
         if shuffle_type == 1:
             puzzle = list(zip(*puzzle))
 
-        box_groups = [puzzle[i:i+3] for i in range(0, 9, 3)]
+        box_groups = [puzzle[i:i + 3] for i in range(0, 9, 3)]
         random.shuffle(box_groups)
         for box_group in box_groups:
             random.shuffle(box_group)
