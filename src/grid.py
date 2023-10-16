@@ -10,6 +10,7 @@ class Relation():
 
 class Cell:
     notes: list[int]
+    locked: bool = False
 
     def __init__(self, row: int, col: int, value: int = 0):
         self.row = row
@@ -27,12 +28,17 @@ class Cell:
         return self.value != 0
 
     def set_value(self, value: int):
-        self.value = value
-        self.notes.clear()
+        if not self.locked:
+            self.value = value
+            self.notes.clear()
+
+    def set_locked(self, value: bool):
+        self.locked = value
 
     def reset(self):
-        self.value = 0
-        self.notes.clear()
+        if not self.locked:
+            self.value = 0
+            self.notes.clear()
 
     def related_to(self, cell: Cell, relation: Relation = Relation.ALL):
         if cell == self:
@@ -78,3 +84,6 @@ class Grid:
                 return False
 
         return True
+
+    def is_solved(self):
+        return all(cell.has_value() and self.validate_cell(cell) for cell in self.get_cells())

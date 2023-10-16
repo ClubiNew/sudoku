@@ -1,6 +1,8 @@
 import unittest
 from grid import Grid
-from examples import remainder_grid, remainder_validation, remainder_string
+from examples import solvable, remainder_grid, remainder_validation, remainder_string
+
+# TODO: test cell locking, has_value, set_value, reset, related_to, get_cells, get_related_cells
 
 
 class CellValidationTests(unittest.TestCase):
@@ -19,6 +21,23 @@ class CellValidationTests(unittest.TestCase):
         for cell in grid.get_cells():
             self.assertEqual(grid.validate_cell(
                 cell), remainder_validation[cell.row][cell.col])
+
+
+class GridSolvedTests(unittest.TestCase):
+    def test_empty_grid(self):
+        empty_grid = Grid()
+        self.assertFalse(empty_grid.is_solved())
+
+    def test_invalid_grid(self):
+        invalid_grid = Grid(remainder_grid)
+        self.assertFalse(invalid_grid.is_solved())
+
+    def test_solvable_grids(self):
+        for example in solvable:
+            unsolved = Grid(example["unsolved"])
+            self.assertFalse(unsolved.is_solved())
+            solved = Grid(example["solved"])
+            self.assertTrue(solved.is_solved())
 
 
 class ConversionTests(unittest.TestCase):

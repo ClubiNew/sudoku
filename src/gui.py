@@ -1,9 +1,10 @@
 from typing import Optional
 import pygame as pygame
-from grid import Grid, Cell
-from solver import solve
+from grid import Cell
+from solver import set_notes, solve_grid
+from generation import random_puzzle
 
-grid = Grid()
+grid = random_puzzle()
 surface: pygame.Surface
 selected_cell: Optional[Cell] = None
 
@@ -23,12 +24,13 @@ inst_font: pygame.font.Font
 
 
 class Colors:
-    BLK = (0, 0, 0)
+    BLK = (20, 20, 20)
     WHT = (255, 255, 255)
     RED = (234, 52, 52)
     L_RED = (255, 204, 204)
     BLU = (153, 204, 255)
     L_BLU = (219, 237, 255)
+    D_BLU = (20, 20, 100)
 
 
 def initialize_pygame():
@@ -41,7 +43,7 @@ def initialize_pygame():
     inst_font = pygame.font.SysFont("inter", inst_font_size)
 
     # window (a.k.a. surface)
-    pygame.display.set_caption("Sudoku Solver")
+    pygame.display.set_caption("Sudoku")
     pygame.display.set_mode(
         (grid_size + grid_margin * 2, grid_size + grid_margin * 2))
     surface = pygame.display.get_surface()
@@ -65,10 +67,10 @@ def draw():
             1)
         if cell == selected_cell:
             pygame.draw.rect(surface, Colors.BLU, rect)
-        elif selected_cell is not None and cell.related_to(selected_cell):
-            pygame.draw.rect(surface, Colors.L_BLU, rect)
         elif not grid.validate_cell(cell):
             pygame.draw.rect(surface, Colors.L_RED, rect)
+        elif selected_cell is not None and cell.related_to(selected_cell):
+            pygame.draw.rect(surface, Colors.L_BLU, rect)
 
     # grid lines
     for i in range(10):
@@ -84,10 +86,8 @@ def draw():
     # cell values
     for cell in grid.get_cells():
         if cell.has_value():
-            color = Colors.BLK
-            if selected_cell is not None and not grid.validate_cell(cell):
-                if cell == selected_cell or cell.related_to(selected_cell):
-                    color = Colors.RED
+            color = Colors.BLK if cell.locked else \
+                Colors.D_BLU if grid.validate_cell(cell) else Colors.RED
             text = std_font.render(str(cell), True, color)
             text_rect = text.get_rect(
                 center=(cell_size / 2, cell_size / 2))
@@ -109,7 +109,7 @@ def draw():
                 surface.blit(text, text_rect)
 
     # instructions
-    instructions = "Click on a cell to select it, then enter a number. Hit backspace to clear a number. Hold shift to add/remove notes. Use arrow keys to move to adjacent cells. Hit escape or click outside the grid to deselect a cell. Hit enter to auto-solve the puzzle. Hit R to clear the grid.".split()
+    instructions = "Click on a cell to select it, then enter a number. Hit backspace to clear a number. Hold shift to add/remove notes. Use arrow keys to move to adjacent cells. Hit escape or click outside of the grid to deselect a cell. Hit H to get hints for solving the puzzle. Hit enter to auto-solve the puzzle. Hit R to reset the puzzle. Hit C to clear the grid. Hit G to generate a new puzzle.".split()
     lines = []
 
     while len(instructions) > 0:
@@ -128,6 +128,7 @@ def draw():
 
 
 def process_events():
+    global grid
     redraw = False
 
     for event in pygame.event.get():
@@ -192,25 +193,35 @@ def process_events():
                         if digit in cell.notes:
                             cell.notes.remove(digit)
                 redraw = True
+                continue
             elif event.key in [pygame.K_BACKSPACE, pygame.K_DELETE]:
                 selected_cell.reset()
                 redraw = True
+                continue
 
         # clearing
         if event.key == pygame.K_r:
             for cell in grid.get_cells():
                 cell.reset()
             redraw = True
-            continue
-
-        # solving
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-            solve(grid)
+        elif event.key == pygame.K_c:
+            for cell in grid.get_cells():
+                cell.set_locked(False)
+                cell.reset()
             redraw = True
-            continue
-
+        # regenerating
+        elif event.key == pygame.K_g:
+            grid = random_puzzle()
+            redraw = True
+        # solving
+        elif event.key == pygame.K_RETURN:
+            solve_grid(grid)
+            redraw = True
+        elif event.key == pygame.K_h:
+            set_notes(grid)
+            redraw = True
         # dump to string
-        if event.key == pygame.K_p:
+        elif event.key == pygame.K_p:
             print(str(grid))
 
     if redraw:
