@@ -2,7 +2,8 @@ import unittest
 from grid import Grid
 from examples import solvable, remainder_grid, remainder_validation, remainder_string
 
-# TODO: test cell locking, has_value, set_value, reset, related_to, get_cells, get_related_cells
+# TODO: test cell locking, has_value, set_value, reset, related_to,
+# get_cells, get_related_cells
 
 
 class CellValidationTests(unittest.TestCase):
