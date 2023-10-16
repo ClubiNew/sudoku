@@ -1,6 +1,7 @@
 from typing import Optional
 import pygame as pygame
 from grid import Grid, Cell
+from solver import solve
 
 grid = Grid()
 surface: pygame.Surface
@@ -187,6 +188,12 @@ def process_events():
         if event.key == pygame.K_r:
             for cell in grid.get_cells():
                 cell.reset()
+            redraw = True
+            continue
+
+        # solving
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            solve(grid)
             redraw = True
             continue
 
