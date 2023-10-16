@@ -178,7 +178,7 @@ def process_events():
                 continue
 
         # number input
-            if event.key > pygame.K_0 and event.key <= pygame.K_9:
+            if pygame.K_0 < event.key <= pygame.K_9:
                 digit = event.key - pygame.K_0
                 # use shift modifier for notes
                 if event.mod & pygame.KMOD_SHIFT:
